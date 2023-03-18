@@ -30,9 +30,6 @@ app.get("/csv_students", (req, res) => {
 
 console.log(student_data); // log the data to the console
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
 
 // Bonus: how to parse a CSV file
 app.get("/csv_students_bonus", (req, res) => {
@@ -57,6 +54,25 @@ app.get("/csv_students_bonus", (req, res) => {
     res.send(students);
   });
 });
+
+
+app.post("/students/create", (req, res) => {
+  console.log(req.body);
+  const csvLine = `\n${req.body.name},${req.body.school}`;
+  console.log(csvLine);
+  const stream = fs.writeFile(
+    "./students.csv",
+    csvLine,
+    { flag: "a" },
+  );
+});
+
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
+
 
 
 
