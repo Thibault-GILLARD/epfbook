@@ -1,10 +1,16 @@
 const express = require('express')
 const app = express()
 const port = 3000
+const fs = require("fs");
+/*
 
-app.get('/', (req, res) => {
-  res.send('Hello World! 3')
-})
+
+app.get("/students-csv", (req, res) => {
+  // example based on a CSV file
+  fs.readFile("./students.csv", "utf8", (err, data) => {
+    res.send(data);
+  });
+});
 
 app.get("/students", (req, res) => {
   // basic example: we send hard-coded data
@@ -13,10 +19,39 @@ app.get("/students", (req, res) => {
     { name: "Harry Potter", school: "Poudlard" },
   ]);
 });
+*/
+
+// basic data to send to the client 
+const student_data = [
+  { name: "Eric Burel", school: "LBKE" },
+  { name: "Harry Potter", school: "Poudlard" },
+];
+
+// Method to send data to the client with a GET request
+app.get('/', (req, res) => {
+  res.send('Hello World! 2')
+});
+
+
+app.get('/students', (req, res) => {
+  res.send(student_data);
+  console.log(student_data); // log the data to the console
+});
+
+app.get("/csv_students", (req, res) => {
+  // example based on a CSV file
+  fs.readFile("./students.csv", "utf8", (err, data) => {
+    res.send(data);
+    console.log(data);
+  });
+});
+
+console.log(student_data); // log the data to the console
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
 
 
 
