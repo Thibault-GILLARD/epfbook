@@ -3,6 +3,11 @@ const app = express()
 const port = 3000
 const fs = require("fs");
 
+//TP4 
+const basicAuth = require("express-basic-auth");
+//const bcrypt = require("bcrypt");
+
+
 // TP3
 const path = require('path');
 // Enable EJS templates
@@ -17,6 +22,14 @@ app.use(express.static("public"));
 app.use(express.json());
 // Enable form requests
 app.use(express.urlencoded({ extended: true })); // extended: true allows to parse nested objects
+
+// Setup basic authentication
+app.use(
+  basicAuth({
+
+    challenge: true,
+  })
+);
 
 // basic data to send to the client 
 const student_data = [
@@ -59,7 +72,7 @@ const storeStudentInCsvFile = (student, cb) => {
 
 // Method to send data to the client with a GET request
 app.get('/', (req, res) => {
-  res.send('Hello World! 2')
+  res.send('Hello World! 3')
 });
 
 // Serving some HTML as a file
