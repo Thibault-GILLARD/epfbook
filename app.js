@@ -53,6 +53,14 @@ const encryptedPasswordAuthorizer = (username, password, cb) => {
   });
 };
 
+// TP4 Cookies
+const token = "FOOBAR";
+const tokenCookie = {
+  path: "/",
+  httpOnly: true,
+  expires: new Date(Date.now() + 60 * 60 * 1000),
+};
+
 // TP3
 const path = require('path');
 // Enable EJS templates
