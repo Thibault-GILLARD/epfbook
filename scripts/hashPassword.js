@@ -14,6 +14,6 @@ const readline = require("readline").createInterface({
       }
       console.log("Encrypted version of your password:", hash);
       // leave the script
-      exit(0);
+      process.exit(0);
     });
   });

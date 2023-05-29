@@ -7,6 +7,29 @@ const fs = require("fs");
 const basicAuth = require("express-basic-auth");
 const bcrypt = require("bcrypt");
 
+// TP4 
+const parseCsvWithHeader = (filepath, cb) => {
+  const rowSeparator = "\n";
+  const cellSeparator = ",";
+  // example based on a CSV file
+  fs.readFile(filepath, "utf8", (err, data) => {
+    const rows = data.split(rowSeparator);
+    // first row is an header I isolate it
+    const [headerRow, ...contentRows] = rows;
+    const header = headerRow.split(cellSeparator);
+
+    const items = contentRows.map((row) => {
+      const cells = row.split(cellSeparator);
+      const item = {
+        [header[0]]: cells[0],
+        [header[1]]: cells[1],
+      };
+      return item;
+    });
+    return cb(null, items);
+  });
+};
+
 // TP4 Autorizer function
 const encryptedPasswordAuthorizer = (username, password, cb) => {
   // Parse the CSV file: this is very similar to parsing students!
