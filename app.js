@@ -5,8 +5,30 @@ const fs = require("fs");
 
 //TP4 
 const basicAuth = require("express-basic-auth");
-//const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
+// TP4 Autorizer function
+const encryptedPasswordAuthorizer = (username, password, cb) => {
+  // Parse the CSV file: this is very similar to parsing students!
+  parseCsvWithHeader("./users.csv", (err, users) => {
+    // Check that our current user belong to the list
+    const storedUser = users.find((possibleUser) => {
+      // NOTE: a simple comparison with === is possible but less safe
+      return basicAuth.safeCompare(possibleUser.username, username);
+    });
+    // NOTE: this is an example of using lazy evaluation of condition
+    if (!storedUser) {
+      // username not found
+      cb(null, false);
+    } else {
+      // now we check the password
+      // bcrypt handles the fact that storedUser password is encrypted
+      // it is asynchronous, because this operation is long
+      // so we pass the callback as the last parameter
+      bcrypt.compare(password, storedUser.password, cb);
+    }
+  });
+};
 
 // TP3
 const path = require('path');
@@ -26,7 +48,9 @@ app.use(express.urlencoded({ extended: true })); // extended: true allows to par
 // Setup basic authentication
 app.use(
   basicAuth({
-
+    // users: { [process.env.ADMIN_USERNAME]: process.env.ADMIN_PASSWORD }, // example of a single user
+    authorizer: encryptedPasswordAuthorizer,
+    authorizeAsync: true,
     challenge: true,
   })
 );
